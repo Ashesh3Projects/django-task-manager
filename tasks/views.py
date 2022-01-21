@@ -6,6 +6,10 @@ pending_tasks: List[str] = []
 completed_tasks: List[str] = []
 
 
+def _delete_task(task_id):
+    return pending_tasks.pop(task_id - 1)
+
+
 def index(request):
     return render(request, "index.html")
 
@@ -32,10 +36,10 @@ def add_task_view(request):
 
 
 def complete_task(request, task_id):
-    completed_tasks.append(pending_tasks.pop(task_id - 1))
+    completed_tasks.append(_delete_task(task_id))
     return HttpResponseRedirect("/tasks")
 
 
 def delete_task(request, task_id):
-    pending_tasks.pop(task_id - 1)
+    _delete_task(task_id)
     return HttpResponseRedirect("/tasks")
